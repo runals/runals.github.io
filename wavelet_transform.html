@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html  >
+<head>
+  <!-- Site made with Mobirise Website Builder v5.0.29, https://mobirise.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Mobirise v5.0.29, mobirise.com">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <link rel="shortcut icon" href="assets/images/logo2-128x133.png" type="image/x-icon">
+  <meta name="description" content="In this article the Wavelet Transformation (or just Wavelet Transform) is introduced. This technique is similar to the widely-used Fourier Transform (FT). Here, I start with a review of the Fourier Transform, discuss key ideas of the Wavelet Transform, and conclude with a concrete example with MATLAB code.">
+  
+  
+  <title>Fourier & Wavelet Transform | Shawhin Talebi</title>
+  <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
+  <link rel="stylesheet" href="assets/tether/tether.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
+  <link rel="stylesheet" href="assets/dropdown/css/style.css">
+  <link rel="stylesheet" href="assets/socicon/css/styles.css">
+  <link rel="stylesheet" href="assets/theme/css/style.css">
+  <link href="assets/fonts/style.css" rel="stylesheet">
+  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
+  
+  
+  
+  
+</head>
+<body>
+  
+  <section class="content4 cid-sUUumQO2Kb" id="content4-26">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="title col-md-12 col-lg-10">
+                <h3 class="mbr-section-title mbr-fonts-style align-center mb-4 display-2"><strong>Fourier vs. Wavelet Transformations — What’s the Difference?</strong></h3>
+                <h4 class="mbr-section-subtitle align-center mbr-fonts-style mb-4 display-7"><strong>&nbsp;Learn how wavelet transforms work and how to do it yourself in this step-by-step tutorial.</strong><br>By: Shawhin Talebi<br><br>This article is also published with <a href="https://builtin.com/data-science/wavelet-transform" class="text-primary" target="_blank">Built In's Expert Contributors Network</a>.</h4>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="engine"><a href="https://mobirise.info/q">free responsive website templates</a></section><section class="menu menu1 cid-s9Kvj84ROe" once="menu" id="menu1-24">
+    
+
+    <nav class="navbar navbar-dropdown navbar-fixed-top navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-primary display-5" href="index.html">Home</a></span>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav nav-dropdown nav-right" data-app-modern-menu="true"><li class="nav-item"><a class="nav-link link text-success text-primary display-4" href="projects.html" aria-expanded="true">
+                            Projects</a></li><li class="nav-item"><a class="nav-link link text-success text-primary display-4" href="https://shawhin.medium.com/" target="_blank">
+                            Blog</a></li><li class="nav-item"><a class="nav-link link text-success text-primary display-4" href="https://www.youtube.com/channel/UCa9gErQ9AE5jT2DZLjXBIdA" target="_blank">
+                            YouTube</a></li>
+                    <li class="nav-item"><a class="nav-link link text-success text-primary display-4" href="about.html">
+                            About</a></li></ul>
+                
+                
+            </div>
+        </div>
+    </nav>
+</section>
+
+<section class="content5 cid-sUUuTNLqKi" id="content5-27">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4">Understanding the wavelet transform is straightforward once you have a solid grasp on how the <a href="https://medium.com/@shawhin/time-series-signals-the-fourier-transform-f68e8a97c1c2" class="text-primary" target="_blank">Fourier transform</a> works. I’ll start with a review of the Fourier transform, discuss key ideas of the wavelet transform, and conclude with a <a href="https://www.mathworks.com/help/wavelet/ug/r-wave-detection-in-the-ecg.html" class="text-primary" target="_blank">concrete example</a> with MATLAB code. You can follow along with the <a href="https://github.com/ShawhinT/YouTube/tree/main/waveletTransform" class="text-primary" target="_blank">example code</a>.<br><br><u>Key Points</u>:<br><strong>- Fourier transforms</strong> breaks down signals into oscillations that persist over the entire sequence. <strong>-&nbsp;Wavelet transforms</strong> perform a similar function, however they can break signals down into oscillations localized in space and time.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUvHOKV7s" id="image3-28">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="image-wrapper">
+                    <img src="assets/images/visuals.019-1836x1033.jpg" alt="Mobirise">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUwalYLNQ" id="content5-29">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                <h4 class="mbr-section-subtitle mbr-fonts-style mb-4 display-5">What Is the Fourier Transform?</h4>
+                <p class="mbr-text mbr-fonts-style display-4">An idea you’ll find all over science, math and engineering is the <a href="https://medium.com/@shawhin/time-series-signals-the-fourier-transform-f68e8a97c1c2" class="text-primary" target="_blank">Fourier transform (FT)</a>. The FT decomposes a function into simple sines and cosines (i.e. waves). In theory, any function can be represented in this way — that is, as a sum of (possibly infinite) sine and cosine functions of different amplitudes and frequencies.<br><br>I’ve provided a toy example below. Here, the top signal is translated from the time domain to the frequency domain. In other words, we change the x-axis from time to frequency. The way to interpret peaks in the bottom plot is that the original signal can be represented as the sum of two simple sine waves with frequencies one and two Hz, respectively.<br><br>You can find the code at the accompanying <a href="https://github.com/ShawhinT/YouTube/tree/main/fourierTransform" class="text-primary" target="_blank">GitHub repo</a>.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUwXdtYE0" id="image3-2c">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-6">
+                <div class="image-wrapper">
+                    <img src="assets/images/ft-toy-exmaple-1076x807.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4"><strong>
+                        Top</strong>: a time series signal. <strong>Bottom</strong>: the signal transformed to Fourier (frequency) space.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUwV7Virw" id="content5-2a">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                <h4 class="mbr-section-subtitle mbr-fonts-style mb-4 display-5">Wavelet Transform</h4>
+                <p class="mbr-text mbr-fonts-style display-4">A major disadvantage of the Fourier transform is it captures global frequency information, meaning frequencies that persist over an entire signal. This kind of signal decomposition may not serve all applications well, for example electrocardiography (ECG), where signals have short intervals of characteristic oscillation. An alternative approach is the <strong>wavelet transform</strong>, which <strong>decomposes a function into a set of wavelets</strong>.<br><br><strong>What is a Wavelet?</strong><br>A <strong>wavelet</strong> is a <strong>wave-like oscillation localized in time</strong>; I’ve provided an example below. Wavelets have two basic properties: scale and location. <strong>Scale</strong> (or dilation) defines <strong>how stretched or squished a wavelet is</strong>. This property relates to frequency as defined for waves. <strong>Location</strong> defines <strong>where the wavelet is positioned in time</strong> (or space).<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUzpGDR1o" id="image3-2d">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-7">
+                <div class="image-wrapper">
+                    <img src="assets/images/example-wavelet-1266x566.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4">Example Wavelet: The first derivative of Gaussian Function.<br></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image1 cid-sUUBGm8zoc" id="image1-2e">
+    
+
+    
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="image-wrapper">
+                    <img src="assets/images/scale-1076x346.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style pt-2 align-center display-4"><strong>Left</strong>: Example wavelet with decreased scale. <br><strong>Right</strong>: Example wavelet with increased scale.<br></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg">
+                <div class="text-wrapper">
+                    
+                    <p class="mbr-text mbr-fonts-style display-4">
+                        The parameter “a” in the expression above sets the scale of the wavelet. If we decrease its value the wavelet will look more squished. This in turn can capture high frequency information. Conversely, increasing the value of “a” will stretch the wavelet and capture low frequency information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image1 cid-sUUClFS2F1" id="image1-2f">
+    
+
+    
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6">
+                <div class="image-wrapper">
+                    <img src="assets/images/location-1076x354.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style pt-2 align-center display-4"><strong>
+                    Left</strong>: Example wavelet with decreased location. <br><strong>Right</strong>: Example wavelet with increased location and decreased scale. </p>
+                </div>
+            </div>
+            <div class="col-12 col-lg">
+                <div class="text-wrapper">
+                    
+                    <p class="mbr-text mbr-fonts-style display-4">
+                        The parameter “b” defines the location of the wavelet. Decreasing “b” will shift the wavelet to the left. Increasing “b” will shift it to the right. Location is important because unlike waves, wavelets are only non-zero in a short interval. Furthermore, when analyzing a signal we are not only interested in its oscillations, but where those oscillations take place.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUwVwTHDr" id="content5-2b">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4"><strong>How Does Wavelet Transform Work?</strong><br>The <strong>basic idea</strong> is to <strong>compute <em>how</em> <em>much</em> of a wavelet is in a signal</strong> for a particular scale and location. For those familiar with convolutions, that’s exactly what this is. A signal is convolved with a set of wavelets at a variety of scales.<br><br>In other words, we pick a wavelet of a particular scale (like the blue wavelet in the gif below). Then, we slide this wavelet across the entire signal (i.e. vary its location), where at each time step we multiply the wavelet and signal. The product of this multiplication gives us a coefficient for that wavelet scale at that particular time step. We then increase the wavelet scale (e.g. the red and green wavelets) and repeat the process.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUEajNZHP" id="content5-2h">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-7">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-7"><iframe src="https://gfycat.com/ifr/ConstantPoliteEasternnewt" frameborder="0" scrolling="no" allowfullscreen="" width="640" height="524"></iframe></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUEsMpecw" id="content5-2i">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4"><strong>
+                    Why Use Wavelets?</strong><br>A couple of key advantages of the Wavelet Transform are:<br><strong>&nbsp; &nbsp; &nbsp;1) Wavelet transform can extract local spectral and temporal information simultaneously<br>&nbsp; &nbsp; &nbsp;2)&nbsp;There are a variety of wavelets from which to choose.</strong><br><br>We have touched on the first key advantage a couple times already but that’s because it’s the biggest reason to use the wavelet transform. This may be preferable to using something like a short-time Fourier transform which requires chopping up a signal into segments and performing a Fourier transform over each segment.<br><br>The second key advantage sounds more like a technical detail. Ultimately, the takeaway here is: if you know what characteristic shape you’re trying to extract from your signal, there are a wide variety of wavelets to choose from to best match that shape. I’ve provided a handful of options in the figure below.<strong><br></strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUDpT5B1E" id="image3-2g">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="image-wrapper">
+                    <img src="assets/images/variety-wavelets-1400x1297.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4"><strong>
+                        Some wavelet families.</strong> From top to bottom, left to right: Daubechies 4, Daubechies 16, Haar, Coiflet 1, Symlet 4, Symlet 8, Biorthogonal 1.3, &amp; Biorthogonal 3.1. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUFkd3CpC" id="content5-2j">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                <h4 class="mbr-section-subtitle mbr-fonts-style mb-4 display-5">Detecting R-Peaks in ECG Signal</h4>
+                <p class="mbr-text mbr-fonts-style display-4">In this example, I use a type of discrete wavelet transform to help detect R-peaks from an electrocardiogram (ECG), which measures heart activity. R-peaks are typically the highest peak in an ECG signal. They are part of the QRS-complex, which is a characteristic oscillation that corresponds to the contraction of the ventricles and expansion of the atria. Detecting R-peaks is helpful in computing heart rate and heart rate variability (HRV). You can find example code at the <a href="https://github.com/ShawhinT/YouTube/tree/main/waveletTransform" class="text-primary" target="_blank">GitHub repo</a>.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUG1jlKED" id="image3-2k">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="image-wrapper">
+                    <img src="assets/images/ecg-signal-components-1400x572.jpg" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4">Cartoon sketch of a typical ECG signal components from heartbeats. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUGzNiwU7" id="content5-2n">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4">In the real world, we rarely have ECG signals that look as clean as the above graphic. As seen in this example, ECG data is typically noisy. For R-peak detection, simple peak finding algorithms will fail to generalize when applied to raw data. The wavelet transform can help convert the signal into a form that makes it much easier for our peak finder function.<br><br>Here I use the maximal overlap discrete wavelet transform (MODWT) to extract R-peaks from the ECG waveform. I’m using the symlet wavelet with four vanishing moments (sym4) at seven different scales. Below, I’ve plotted the original ECG signal along with wavelet coefficients for each scale over time.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUGxvnyjf" id="image3-2l">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="image-wrapper">
+                    <img src="assets/images/wavelettransform-signal-decomposition-1836x950.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4">
+                        ECG signal and corresponding wavelet coefficients for 7 different scales over time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUH66AfQP" id="content5-2o">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4">The smaller scales (such as 2⁰ and 2¹) correspond to high frequencies, and thus predominantly consist of noise in this example. As we go up in scale, we see blips emerge from the noise that correspond to R-peaks (i.e. in 2², 2³ and 2⁴). We then lose the signal in the larger scale coefficients (i.e. 2⁵ and 2⁶), which are associated with low frequency information.<br><br><strong>We can then reconstruct the original signal with information from a subset of our wavelet scales</strong>. Here I only keep information from one scale, 2³. I’ve plotted the original and reconstructed signals below. We see the peaks in the reconstructed ECG (lower plot) line up reasonably well with the R-peaks. Additionally, applying a peak finder to the reconstructed ECG seems much more promising than to the original ECG.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUGyaVrnI" id="image3-2m">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="image-wrapper">
+                    <img src="assets/images/wavelettransform-reconstructed-signal-1836x945.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4">
+                        Top: Original ECG signal Bottom: Reconstructed ECG from wavelet transform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUIPuSNrW" id="content5-2p">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4">The final step is to <strong>apply a find peaks function to the reconstructed signal</strong>. This will give approximate timestamps of each R-peak. To evaluate the performance we plot the detected R-peaks on top of the original signal.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="image3 cid-sUUISeVZOS" id="image3-2r">
+    
+
+    
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="image-wrapper">
+                    <img src="assets/images/wavelettransform-rpeak-annotation-1836x945.png" alt="Mobirise">
+                    <p class="mbr-description mbr-fonts-style mt-2 align-center display-4">Original ECG signal annotated by wavelet detected R-peaks.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUIQBq774" id="content5-2q">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                
+                <p class="mbr-text mbr-fonts-style display-4">
+                    As you can see, the key advantage of the wavelet transform compared to the Fourier transform is the ability to extract both local spectral and temporal information. For a deeper dive into the details of the wavelet transform, check out <a href="https://pubmed.ncbi.nlm.nih.gov/16088052/" class="text-primary" target="_blank">Addison's review</a>.<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="video2 cid-sUUJXEKLKg" id="video2-2t">
+    
+    <div class="container">
+        <div class="mbr-section-head">
+            
+            <h5 class="mbr-section-subtitle mbr-fonts-style mb-0 mt-2 display-5">Want to learn more?</h5>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-7 video-block">
+                <div class="video-wrapper"><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/MX7ymkYGiZ0?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="1280" height="720" frameborder="0" allowfullscreen></iframe></div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content5 cid-sUUJru9555" id="content5-2s">
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                
+                <h4 class="mbr-section-subtitle mbr-fonts-style mb-4 display-5">
+                    Referenes<br></h4>
+                <p class="mbr-text mbr-fonts-style display-4"><strong>
+                    Great wavelet review</strong>: Addison, P.S. (2005). Wavelet transforms and the ecg: A review. Physiological Measurement, 26 (5), p. R155<br><br><strong>Example inspired by</strong>: https://www.mathworks.com/help/wavelet/ug/r-wave-detection-in-the-ecg.html<br></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="footer3 cid-suQLRBZZiE" once="footers" id="footer3-25">
+
+    
+
+    
+
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="row row-links">
+                <ul class="foot-menu">
+                    
+                    
+                    
+                    
+                    
+                <li class="foot-menu-item mbr-fonts-style display-7"><a href="about.html" class="text-info">About&nbsp;&nbsp;</a></li><li class="foot-menu-item mbr-fonts-style display-7"><a href="https://shawhin.medium.com/" class="text-info text-primary" target="_blank">Blog</a></li><li class="foot-menu-item mbr-fonts-style display-7"><a href="https://www.youtube.com/channel/UCa9gErQ9AE5jT2DZLjXBIdA" class="text-info" target="_blank">YouTube</a></li><li class="foot-menu-item mbr-fonts-style display-7"><a href="connect.html" class="text-info">Connect</a></li><li class="foot-menu-item mbr-fonts-style display-7"><a href="https://scholar.google.com/citations?user=G7de-rUAAAAJ&hl=en" class="text-info" target="_blank">Scholar</a></li></ul>
+            </div>
+            <div class="row social-row">
+                <div class="social-list align-right pb-2">
+                    
+                    
+                    
+                    
+                    
+                    
+                <div class="soc-item">
+                        <a href="https://github.com/ShawhinT" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social mobi-mbri-github mobi-mbri"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://medium.com/simple-success" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-medium socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.instagram.com/shawhintalebi/" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-instagram socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.pinterest.com/simple_success/_created/" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-pinterest socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://vm.tiktok.com/TTPdSEQDrv/" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-tiktok socicon"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://twitter.com/ShawhinT" target="_blank">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon"></span>
+                        </a>
+                    </div></div>
+            </div>
+            <div class="row row-copirayt">
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white align-center display-7">Shawhin Talebi&nbsp; Ventures LLC</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <script src="assets/web/assets/jquery/jquery.min.js"></script>
+  <script src="assets/popper/popper.min.js"></script>
+  <script src="assets/tether/tether.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+  <script src="assets/smoothscroll/smooth-scroll.js"></script>
+  <script src="assets/dropdown/js/nav-dropdown.js"></script>
+  <script src="assets/dropdown/js/navbar-dropdown.js"></script>
+  <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+  <script src="assets/playervimeo/vimeo_player.js"></script>
+  <script src="assets/theme/js/script.js"></script>
+  
+  
+  
+</body>
+</html>
